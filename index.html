@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Field Notes by Wei</title>
+  <style>
+    :root {
+      --bg: #121212;
+      --panel: #181818;
+      --card: #f3f3f1;
+      --text: #f5f5f3;
+      --muted: #b8b8b2;
+      --border: rgba(255,255,255,0.14);
+      --shadow: 0 24px 60px rgba(0,0,0,0.28);
+      --phone-shadow: 0 18px 40px rgba(0,0,0,0.22);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.04), transparent 32%),
+        linear-gradient(180deg, #1a1a1a 0%, #111111 100%);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+      letter-spacing: 0.01em;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1160px, calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(12px);
+      background: rgba(18,18,18,0.72);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .nav {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-title {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.35rem;
+      letter-spacing: 0.03em;
+    }
+
+    .brand-subtitle {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      color: var(--muted);
+      letter-spacing: 0.16em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      color: var(--text);
+    }
+
+    .hero {
+      padding: 96px 0 56px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 18px;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      color: var(--muted);
+      letter-spacing: 0.18em;
+    }
+
+    h1 {
+      margin: 0 0 18px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(3rem, 7vw, 5.4rem);
+      line-height: 0.96;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 640px;
+      color: #dbdbd6;
+      font-size: 1.04rem;
+    }
+
+    .hero-actions {
+      margin-top: 28px;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .button,
+    .button-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 22px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .button {
+      background: #f4f4f1;
+      color: #141414;
+      border: 1px solid #f4f4f1;
+    }
+
+    .button-secondary {
+      border: 1px solid rgba(255,255,255,0.16);
+      color: var(--text);
+      background: transparent;
+    }
+
+    .button:hover,
+    .button-secondary:hover {
+      transform: translateY(-1px);
+    }
+
+    .phone-stage {
+      position: relative;
+      min-height: 520px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+    }
+
+    .phone-card {
+      position: absolute;
+      width: 190px;
+      background: #fafaf8;
+      color: #111;
+      border-radius: 28px;
+      padding: 18px 16px 22px;
+      box-shadow: var(--phone-shadow);
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .phone-card.left {
+      left: 0;
+      top: 108px;
+      transform: rotate(-8deg);
+    }
+
+    .phone-card.right {
+      right: 0;
+      top: 108px;
+      transform: rotate(8deg);
+    }
+
+    .phone-ui-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 28px;
+      color: #b7b7b0;
+    }
+
+    .phone-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #d2d2cb;
+    }
+
+    .phone-line {
+      width: 40px;
+      height: 6px;
+      border-radius: 999px;
+      background: #d9d9d2;
+    }
+
+    .phone-mini {
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #8e8e87;
+      margin-bottom: 12px;
+    }
+
+    .phone-title {
+      margin: 0 0 12px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.8rem;
+      line-height: 1.02;
+      font-weight: 500;
+    }
+
+    .phone-copy {
+      font-size: 0.86rem;
+      color: #55554f;
+      line-height: 1.5;
+      margin: 0 0 18px;
+    }
+
+    .phone-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 48px;
+      height: 28px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid #d2d2ca;
+      font-size: 0.75rem;
+      color: #52524d;
+    }
+
+    .phone-frame {
+      width: 266px;
+      background: linear-gradient(160deg, #222 0%, #090909 100%);
+      border-radius: 42px;
+      padding: 12px;
+      box-shadow: 0 26px 70px rgba(0,0,0,0.35);
+      border: 2px solid rgba(255,255,255,0.08);
+      position: relative;
+      z-index: 2;
+    }
+
+    .phone-frame::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 112px;
+      height: 22px;
+      background: #050505;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+      z-index: 4;
+    }
+
+    .phone-screen {
+      background: linear-gradient(180deg, #f8f8f6 0%, #f0f0ec 100%);
+      border-radius: 32px;
+      padding: 44px 24px 26px;
+      min-height: 500px;
+      color: #111;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .screen-meta {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #8a8a83;
+      margin-bottom: 16px;
+    }
+
+    .screen-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 62px;
+      height: 30px;
+      border-radius: 999px;
+      border: 1px solid #cfcfc8;
+      font-size: 0.78rem;
+      margin-bottom: 18px;
+      color: #52524d;
+    }
+
+    .screen-title {
+      margin: 0 0 12px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 2.1rem;
+      line-height: 1.02;
+      font-weight: 500;
+    }
+
+    .screen-copy {
+      margin: 0 0 28px;
+      font-size: 0.95rem;
+      color: #55554f;
+    }
+
+    .screen-footer {
+      position: absolute;
+      bottom: 22px;
+      left: 24px;
+      right: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #8d8d87;
+      font-size: 0.82rem;
+    }
+
+    .icon-row {
+      display: flex;
+      gap: 14px;
+    }
+
+    .section-heading {
+      padding: 12px 0 26px;
+    }
+
+    .section-heading h2,
+    .about h2,
+    .article-shell h2 {
+      margin: 0 0 10px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    .section-heading p,
+    .about p,
+    .article-shell p {
+      color: var(--muted);
+      margin: 0;
+      max-width: 720px;
+    }
+
+    .posts {
+      padding: 16px 0 84px;
+    }
+
+    .post-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+      margin-top: 28px;
+    }
+
+    .post-card {
+      background: var(--card);
+      color: #111;
+      border-radius: 0;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    .post-card:hover,
+    .post-card:focus-within {
+      transform: translateY(-6px);
+      box-shadow: 0 32px 72px rgba(0,0,0,0.34);
+    }
+
+    .card-visual {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      background: linear-gradient(135deg, #deded8 0%, #bdbdb7 100%);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mini-phone {
+      width: 140px;
+      height: 250px;
+      background: linear-gradient(180deg, #202020 0%, #080808 100%);
+      border-radius: 26px;
+      padding: 8px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.22);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .mini-phone-screen {
+      width: 100%;
+      height: 100%;
+      border-radius: 19px;
+      background: #fafaf7;
+      padding: 22px 14px 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mini-notch {
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 12px;
+      background: #0b0b0b;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+
+    .mini-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 44px;
+      height: 22px;
+      border: 1px solid #d6d6d0;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      color: #66665f;
+      margin-bottom: 14px;
+    }
+
+    .mini-title {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.15rem;
+      line-height: 1.05;
+      color: #111;
+      margin: 0 0 10px;
+    }
+
+    .mini-text {
+      font-size: 0.72rem;
+      line-height: 1.45;
+      color: #5c5c56;
+      margin: 0;
+    }
+
+    .mini-footer {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      color: #a0a09a;
+      font-size: 0.72rem;
+    }
+
+    .card-body {
+      padding: 28px 28px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex-grow: 1;
+      text-align: center;
+    }
+
+    .card-index {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #8a8a83;
+    }
+
+    .card-title {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.7rem, 3vw, 2.3rem);
+      line-height: 1.08;
+      font-weight: 500;
+    }
+
+    .card-description {
+      margin: 0;
+      color: #55554f;
+      font-size: 0.98rem;
+    }
+
+    .read-more {
+      margin-top: auto;
+      padding-top: 8px;
+      font-size: 0.86rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #111;
+    }
+
+    .about {
+      padding: 18px 0 88px;
+    }
+
+    .about-shell {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 36px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 34px;
+      align-items: start;
+    }
+
+    .about-copy {
+      max-width: 640px;
+    }
+
+    .about-meta {
+      display: grid;
+      gap: 18px;
+    }
+
+    .about-box {
+      padding: 24px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .about-box h3 {
+      margin: 0 0 10px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+
+    .about-box p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .article-shell {
+      display: none;
+      padding: 34px 0 92px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .article-shell.active {
+      display: block;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+    }
+
+    .article-meta {
+      margin-bottom: 18px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+    }
+
+    .article-title {
+      margin: 0 0 20px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.4rem, 5vw, 4.3rem);
+      line-height: 1.02;
+      font-weight: 500;
+      max-width: 900px;
+    }
+
+    .article-deck {
+      color: #d6d6d1;
+      margin: 0 0 36px;
+      max-width: 760px;
+      font-size: 1.05rem;
+    }
+
+    .article-layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 34px;
+      align-items: start;
+    }
+
+    .article-side {
+      position: sticky;
+      top: 100px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .article-side-box {
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.03);
+      padding: 20px;
+    }
+
+    .article-side-box h3 {
+      margin: 0 0 10px;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .article-side-box p,
+    .article-side-box li {
+      margin: 0;
+      color: #d8d8d2;
+      font-size: 0.95rem;
+    }
+
+    .article-side-box ul {
+      padding-left: 18px;
+      margin: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .article-content {
+      background: #f4f4f1;
+      color: #121212;
+      padding: 40px clamp(22px, 4vw, 56px);
+      box-shadow: var(--shadow);
+    }
+
+    .article-content h3 {
+      margin: 0 0 12px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.7rem;
+      font-weight: 500;
+    }
+
+    .article-content p {
+      margin: 0 0 20px;
+      color: #222;
+      font-size: 1.02rem;
+    }
+
+    .article-content .placeholder {
+      color: #66665f;
+      font-style: italic;
+    }
+
+    .article-content blockquote {
+      margin: 28px 0;
+      padding: 18px 0 18px 20px;
+      border-left: 2px solid #b7b7af;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.45rem;
+      line-height: 1.35;
+      color: #181818;
+    }
+
+    .article-content .citation-note {
+      margin-top: 34px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(0,0,0,0.1);
+      font-size: 0.95rem;
+      color: #55554f;
+    }
+
+    .site-footer {
+      padding: 24px 0 48px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 1080px) {
+      .hero-grid,
+      .about-shell,
+      .article-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .phone-stage {
+        min-height: 500px;
+        margin-top: 8px;
+      }
+
+      .phone-card.left,
+      .phone-card.right {
+        width: 170px;
+      }
+
+      .article-side {
+        position: static;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 820px) {
+      .post-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 14px 0;
+      }
+
+      .phone-stage {
+        min-height: auto;
+        padding: 24px 0 4px;
+      }
+
+      .phone-card {
+        display: none;
+      }
+
+      .phone-frame {
+        width: min(100%, 330px);
+      }
+
+      .article-side {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .container {
+        width: min(100% - 28px, 1160px);
+      }
+
+      .hero {
+        padding-top: 72px;
+      }
+
+      .card-body,
+      .article-content {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+        gap: 10px 14px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <div class="brand">
+        <a href="#top" class="brand-title">Field Notes by Wei</a>
+        <div class="brand-subtitle">Marketing, ethics, and human understanding</div>
+      </div>
+      <nav class="nav-links" aria-label="Main Navigation">
+        <a href="#posts">Posts</a>
+        <a href="#about">About</a>
+        <a href="#post-1" data-open-post="post-1">Value &amp; Purpose</a>
+        <a href="#post-2" data-open-post="post-2">Ethics</a>
+        <a href="#post-3" data-open-post="post-3">Negotiation</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">Student blog project</span>
+          <h1>Thoughtful notes on people, brands, and judgment.</h1>
+          <p>
+            A minimalist course blog built for three reflections: Personal Value Statement &amp; Purpose,
+            Marketing Ethics, and Negotiations &amp; Customer Care.
+          </p>
+          <div class="hero-actions">
+            <a class="button" href="#posts">View Posts</a>
+            <a class="button-secondary" href="#about">About This Site</a>
+          </div>
+        </div>
+
+        <div class="phone-stage" aria-hidden="true">
+          <div class="phone-card left">
+            <div class="phone-ui-top">
+              <span class="phone-dot"></span>
+              <span class="phone-line"></span>
+            </div>
+            <div class="phone-mini">Field Note 01</div>
+            <h2 class="phone-title">Value &amp; Purpose</h2>
+            <p class="phone-copy">What guides judgment, priorities, and the way I choose to show up in the world.</p>
+            <span class="phone-tag">Read</span>
+          </div>
+
+          <div class="phone-frame">
+            <div class="phone-screen">
+              <div class="screen-meta">Social awareness &amp; ethics</div>
+              <div class="screen-number">Featured</div>
+              <h2 class="screen-title">Field Notes by Wei</h2>
+              <p class="screen-copy">Three connected posts on values, ethics, care, and how marketing decisions affect people.</p>
+              <div class="screen-footer">
+                <span>Course blog</span>
+                <div class="icon-row">
+                  <span>♡</span>
+                  <span>↗</span>
+                  <span>⋯</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="phone-card right">
+            <div class="phone-ui-top">
+              <span class="phone-dot"></span>
+              <span class="phone-line"></span>
+            </div>
+            <div class="phone-mini">Field Note 03</div>
+            <h2 class="phone-title">Negotiation &amp; Care</h2>
+            <p class="phone-copy">How communication, trust, and service shape the relationship between brands and customers.</p>
+            <span class="phone-tag">Open</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="posts" id="posts">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Blog Posts</h2>
+          <p>Three reflections presented as simple editorial cards. Click any card to open the full article below.</p>
+        </div>
+
+        <div class="post-grid">
+          <article class="post-card">
+            <a href="#post-1" data-open-post="post-1">
+              <div class="card-visual">
+                <div class="mini-phone">
+                  <div class="mini-phone-screen">
+                    <div class="mini-notch"></div>
+                    <div class="mini-number">01</div>
+                    <h3 class="mini-title">Value &amp;<br>Purpose</h3>
+                    <p class="mini-text">A personal reflection on core values, direction, and what matters most.</p>
+                    <div class="mini-footer"><span>♡</span><span>↗</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="card-index">Post One</div>
+                <h3 class="card-title">Personal Value Statement &amp; Purpose</h3>
+                <p class="card-description">The story behind my guiding principles, personal values, and sense of purpose.</p>
+                <div class="read-more">Read More</div>
+              </div>
+            </a>
+          </article>
+
+          <article class="post-card">
+            <a href="#post-2" data-open-post="post-2">
+              <div class="card-visual">
+                <div class="mini-phone">
+                  <div class="mini-phone-screen">
+                    <div class="mini-notch"></div>
+                    <div class="mini-number">02</div>
+                    <h3 class="mini-title">Marketing<br>Ethics</h3>
+                    <p class="mini-text">A reflection on responsibility, truth, and the human impact of marketing choices.</p>
+                    <div class="mini-footer"><span>♡</span><span>↗</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="card-index">Post Two</div>
+                <h3 class="card-title">Marketing Ethics</h3>
+                <p class="card-description">Thinking through responsibility, influence, fairness, and ethical judgment in marketing.</p>
+                <div class="read-more">Read More</div>
+              </div>
+            </a>
+          </article>
+
+          <article class="post-card">
+            <a href="#post-3" data-open-post="post-3">
+              <div class="card-visual">
+                <div class="mini-phone">
+                  <div class="mini-phone-screen">
+                    <div class="mini-notch"></div>
+                    <div class="mini-number">03</div>
+                    <h3 class="mini-title">Negotiation &amp;<br>Care</h3>
+                    <p class="mini-text">A reflection on communication, trust, service recovery, and customer relationships.</p>
+                    <div class="mini-footer"><span>♡</span><span>↗</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="card-index">Post Three</div>
+                <h3 class="card-title">Negotiations and Customer Care</h3>
+                <p class="card-description">How listening, empathy, and problem solving influence customer experience.</p>
+                <div class="read-more">Read More</div>
+              </div>
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="about" id="about">
+      <div class="container about-shell">
+        <div class="about-copy">
+          <h2>About this site</h2>
+          <p>
+            This layout is designed to feel clean, thoughtful, and editorial, with a small phone-inspired visual system.
+            It keeps the structure simple so you can focus on storytelling, while still looking polished enough to publish.
+          </p>
+        </div>
+        <div class="about-meta">
+          <div class="about-box">
+            <h3>Best use</h3>
+            <p>Paste your final writing directly into each article section below, then replace the placeholder text with your finished blog content.</p>
+          </div>
+          <div class="about-box">
+            <h3>For Dreamweaver</h3>
+            <p>This version is a single HTML file with CSS and JavaScript included, so it is easy to open, edit, preview, and submit.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="article-shell active" id="post-1">
+      <div class="container">
+        <a href="#posts" class="back-link">← Back to posts</a>
+        <div class="article-meta">Post One / Personal reflection</div>
+        <h2 class="article-title">Great Expectations: What I Choose to Believe In</h2>
+        <p class="article-deck">Personal Value Statement & Purpose</p>
+
+        <div class="article-layout">
+          <aside class="article-side">
+            <div class="article-side-box">
+              <h3>Section</h3>
+              <ul>
+                <li>Opening</li>
+                <li>Where this comes from</li>
+                <li>How I see what I do</li>
+                <li>Value statement</li>
+                <li>Meaning of expectations</li>
+                <li>Moving forward</li>
+              </ul>
+            </div>
+          </aside>
+
+          <article class="article-content">
+            <h3>Opening</h3>
+            <p>I don’t think I ever cared that much about being seen.</p>
+            <p>At least not in the way most people mean it.</p>
+            <p>I never felt the need to constantly post, explain myself, or prove what I’m doing. Even now, most of what I share feels more like fragments—moments, observations, things I notice—rather than something designed to get attention.</p>
+            <p>But over time, I started realizing something.</p>
+            <p>Just because something is visible doesn’t mean it’s understood.</p>
+            <p>And that difference matters more than I thought.</p>
+
+            <h3>Where This Comes From</h3>
+            <p>A big part of this probably comes from growing up between cultures.</p>
+            <p>When you switch between languages, you notice quickly that translation is never perfect. Words can be converted, but meaning often gets simplified—or completely lost.</p>
+            <p>You start to pay attention to things beyond what is said.</p>
+            <p>Tone. Context. What people actually mean.</p>
+            <p>That habit stayed with me. And without really planning it, it shaped how I see things now.</p>
+            <p>I tend to observe first.</p>
+            <p>How people behave in small situations.
+            What they value, even if they don’t say it directly.
+            How culture quietly influences decisions.</p>
+            <p>Most of the time, these are just normal moments. Nothing dramatic. But when you pay attention long enough, patterns start to show up.</p>
+            <p>And that’s usually where something real begins.</p>
+
+            <h3>How I See What I Do</h3>
+            <p>This is also why I’m drawn to marketing strategy.</p>
+            <p>Not the execution part, but the part where you try to understand what’s actually going on.</p>
+            <p>To me, strategy is where different things connect—what people feel, what a brand wants to say, and what actually gets done.</p>
+            <p>It’s less about reacting quickly, and more about figuring out what matters.</p>
+            <p>And I’ve realized something pretty clearly:</p>
+
+            <blockquote>
+              Most things in the market are built for visibility. But the things that last are built on trust.
+            </blockquote>
+
+            <h3>My Personal Value Statement</h3>
+            <p>If I had to put it simply, this is what I believe:</p>
+            <blockquote>
+              What deserves long-term expectation is not visibility, but trust.
+            </blockquote>
+            <p>I care more about whether something makes sense over time than whether it performs well right now.</p>
+            <p>I value noticing before reacting.
+            Understanding before judging.
+            Clarity over noise.</p>
+            <p>I don’t want to just create something that people see.
+            I want to create something people actually understand—and are willing to trust.</p>
+
+            <h3>What “Great Expectations” Means to Me</h3>
+            <p>We talk a lot about expectations.</p>
+            <p>Performance expectations.
+            Career expectations.
+            Market expectations.</p>
+            <p>But I think the real question is:</p>
+            <p>Which expectations are actually worth holding onto?</p>
+            <p>Because a lot of them aren’t.</p>
+            <p>Some are temporary.
+            Some are driven by pressure.
+            Some disappear as soon as something else replaces them.</p>
+            <p>The kind of expectation I care about is different.</p>
+            <p>It’s the expectation that something will hold.</p>
+            <p>That a decision will still make sense later.
+            That a brand will still feel consistent.
+            That judgment doesn’t fall apart under pressure.</p>
+            <p>That’s what “great expectations” means to me.</p>
+
+            <h3>How I Move Forward</h3>
+            <p>I don’t think I’m someone who moves fast.</p>
+            <p>And honestly, I’m okay with that.</p>
+            <p>I’d rather take the time to understand something properly than rush into a conclusion.</p>
+            <p>What I focus on instead is consistency.</p>
+            <p>Paying attention.
+            Thinking things through.
+            Adjusting when needed.</p>
+            <p>And over time, letting that build into something people can recognize—not just in what I do, but in how I think.</p>
+            <p>Because I don’t think trust comes from one moment.</p>
+            <p>It comes from patterns.</p>
+
+            <h3>Closing</h3>
+            <p>I’m not trying to prove myself quickly.</p>
+            <p>What matters more to me is whether my judgment can hold—over time, across situations, and under pressure.</p>
+            <p>Because being seen is easy.</p>
+            <p>Being understood is harder.</p>
+            <p>And being trusted—that takes time.</p>
+            <p>That’s what I’m working toward.</p>
+            <p>That’s my version of great expectations.</p>
+
+            <div class="citation-note">
+              <h3>References</h3>
+              <p>Chen, C. W. (2026). <em>Great Expectations: Strategic Positioning and a Personal Brand Marketing Plan</em>. University of Denver. <br>
+              <a href="Great_Expectations_Personal_Brand_Plan.pdf" target="_blank">Download PDF</a></p>
+
+              <p>Business Roundtable. (2019). Statement on the Purpose of a Corporation.<br>
+              <a href="https://www.businessroundtable.org/business-roundtable-redefines-the-purpose-of-a-corporation" target="_blank">
+              https://www.businessroundtable.org/business-roundtable-redefines-the-purpose-of-a-corporation</a></p>
+
+              <h3>AI Usage Disclosure</h3>
+              <p>This assignment was developed with the assistance of ChatGPT (OpenAI) as a support tool for organizing ideas, refining language, and improving clarity. All core concepts, personal reflections, and strategic thinking are based on the author’s original work, including the personal brand marketing plan and individual experiences.</p>
+
+              <p>The AI tool was used primarily for editing, structuring, and enhancing readability, while ensuring that the final content reflects the author’s own perspective, voice, and judgment.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="article-shell" id="post-2">
+      <div class="container">
+        <a href="#posts" class="back-link">← Back to posts</a>
+        <div class="article-meta">Post Two / Course reflection</div>
+        <h2 class="article-title">Marketing Ethics</h2>
+        <p class="article-deck">This second article is ready for your ethics reflection once your course prompt and ideas are finalized.</p>
+
+        <div class="article-layout">
+          <aside class="article-side">
+            <div class="article-side-box">
+              <h3>Suggested structure</h3>
+              <ul>
+                <li>What ethical marketing means</li>
+                <li>A case, example, or tension</li>
+                <li>Your judgment and reasoning</li>
+                <li>Implications for brands and people</li>
+              </ul>
+            </div>
+            <div class="article-side-box">
+              <h3>Angle</h3>
+              <p>You can make this reflective, analytical, or a mix of both depending on the assignment instructions.</p>
+            </div>
+          </aside>
+
+          <article class="article-content">
+            <h3>Introduction</h3>
+            <p class="placeholder">Paste your opening paragraph for the ethics blog here.</p>
+
+            <blockquote>
+              Add one strong sentence here that captures your ethical point of view.
+            </blockquote>
+
+            <h3>Main discussion</h3>
+            <p class="placeholder">Paste your analysis here. You can discuss persuasion, responsibility, truth, fairness, or power in marketing communication.</p>
+
+            <h3>Example or case</h3>
+            <p class="placeholder">Paste any course example, speaker insight, or real-world case you want to connect to your argument.</p>
+
+            <h3>Conclusion</h3>
+            <p class="placeholder">Finish with your takeaway on how marketers should think and act more responsibly.</p>
+
+            <div class="citation-note">
+              <h3>References</h3>
+              <p>Chen, C. W. (2026). <em>Great Expectations: Strategic Positioning and a Personal Brand Marketing Plan</em>. University of Denver. <br>
+              <a href="Great_Expectations_Personal_Brand_Plan.pdf" target="_blank">Download PDF</a></p>
+
+              <p>Business Roundtable. (2019). Statement on the Purpose of a Corporation.<br>
+              <a href="https://www.businessroundtable.org/business-roundtable-redefines-the-purpose-of-a-corporation" target="_blank">
+              https://www.businessroundtable.org/business-roundtable-redefines-the-purpose-of-a-corporation</a></p>
+
+              <h3>AI Usage Disclosure</h3>
+              <p>This assignment was developed with the assistance of ChatGPT (OpenAI) as a support tool for organizing ideas, refining language, and improving clarity. All core concepts, personal reflections, and strategic thinking are based on the author’s original work, including the personal brand marketing plan and individual experiences.</p>
+
+              <p>The AI tool was used primarily for editing, structuring, and enhancing readability, while ensuring that the final content reflects the author’s own perspective, voice, and judgment.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="article-shell" id="post-3">
+      <div class="container">
+        <a href="#posts" class="back-link">← Back to posts</a>
+        <div class="article-meta">Post Three / Course reflection</div>
+        <h2 class="article-title">Negotiations and Customer Care</h2>
+        <p class="article-deck">This third article is structured for your final post on negotiation, trust, service, and customer relationships.</p>
+
+        <div class="article-layout">
+          <aside class="article-side">
+            <div class="article-side-box">
+              <h3>Suggested structure</h3>
+              <ul>
+                <li>What negotiation means beyond price</li>
+                <li>The role of listening and empathy</li>
+                <li>Customer care and brand trust</li>
+                <li>Your final reflection</li>
+              </ul>
+            </div>
+            <div class="article-side-box">
+              <h3>Good fit for</h3>
+              <p>Stories about conflict, service recovery, communication breakdown, or what respectful care looks like in practice.</p>
+            </div>
+          </aside>
+
+          <article class="article-content">
+            <h3>Introduction</h3>
+            <p class="placeholder">Paste your opening paragraph for the negotiation and customer care blog here.</p>
+
+            <blockquote>
+              Add one strong line here that defines your view on care, trust, or communication.
+            </blockquote>
+
+            <h3>Negotiation</h3>
+            <p class="placeholder">Paste the section where you explain your thinking on negotiation, compromise, and understanding both sides.</p>
+
+            <h3>Customer care</h3>
+            <p class="placeholder">Paste the section where you connect negotiation to service, trust, and customer relationships.</p>
+
+            <h3>Conclusion</h3>
+            <p class="placeholder">End with the broader lesson on how brands should communicate with and care for people.</p>
+
+            <div class="citation-note">
+              <h3>References</h3>
+              <p>Chen, C. W. (2026). <em>Great Expectations: Strategic Positioning and a Personal Brand Marketing Plan</em>. University of Denver. <br>
+              <a href="Great_Expectations_Personal_Brand_Plan.pdf" target="_blank">Download PDF</a></p>
+
+              <p>Business Roundtable. (2019). Statement on the Purpose of a Corporation.<br>
+              <a href="https://www.businessroundtable.org/business-roundtable-redefines-the-purpose-of-a-corporation" target="_blank">
+              https://www.businessroundtable.org/business-roundtable-redefines-the-purpose-of-a-corporation</a></p>
+
+              <h3>AI Usage Disclosure</h3>
+              <p>This assignment was developed with the assistance of ChatGPT (OpenAI) as a support tool for organizing ideas, refining language, and improving clarity. All core concepts, personal reflections, and strategic thinking are based on the author’s original work, including the personal brand marketing plan and individual experiences.</p>
+
+              <p>The AI tool was used primarily for editing, structuring, and enhancing readability, while ensuring that the final content reflects the author’s own perspective, voice, and judgment.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      Field Notes by Wei · Built for a course blog in Adobe Dreamweaver.
+    </div>
+  </footer>
+
+  <script>
+    const postLinks = document.querySelectorAll('[data-open-post]');
+    const articleSections = document.querySelectorAll('.article-shell');
+
+    function openPost(postId) {
+      articleSections.forEach(section => {
+        section.classList.toggle('active', section.id === postId);
+      });
+    }
+
+    postLinks.forEach(link => {
+      link.addEventListener('click', function () {
+        const postId = this.getAttribute('data-open-post');
+        openPost(postId);
+      });
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash && document.getElementById(hash) && document.getElementById(hash).classList.contains('article-shell')) {
+        openPost(hash);
+      }
+    });
+  </script>
+</body>
+</html>
